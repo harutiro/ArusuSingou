@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
 
         arusSwitchId.setOnCheckedChangeListener { compoundButton, isChecked ->
             arusuZyoutai = isChecked
-
-            println(arusuZyoutai)
         }
 
         yokoButtonId.setOnClickListener {
@@ -48,6 +46,7 @@ class MainActivity : AppCompatActivity() {
                 morusu = morusu +"　"+ henkan(ch.toString())
             }
 
+            //アルマル信号に変換
             if(arusuZyoutai == true){
                 var morusuCharAry = morusu.toCharArray()
 
@@ -58,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-
+            //set
             outTextId.text = morusu
         }
 
@@ -70,10 +69,12 @@ class MainActivity : AppCompatActivity() {
             //cher型に一文字ずつ格納
             var charAry = text.toCharArray()
 
+            //モールス信号変換
             for (ch in charAry) {
                 morusu = morusu +"\n"+ henkan(ch.toString()) + "　[$ch]"
             }
 
+            //アルマル信号変換
             if(arusuZyoutai == true){
                 var morusuCharAry = morusu.toCharArray()
 
@@ -84,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            //set
             outTextId.text = morusu
         }
 
