@@ -6,10 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
 import android.text.Layout
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -29,23 +26,65 @@ class MainActivity : AppCompatActivity() {
 
         //モールス信号格納
         var morusu = ""
+        //アルス変換状態
+        var arusuZyoutai: Boolean = false
+
+        arusSwitchId.setOnCheckedChangeListener { compoundButton, isChecked ->
+            arusuZyoutai = isChecked
+
+            println(arusuZyoutai)
+        }
 
         yokoButtonId.setOnClickListener {
             //morusu初期化
             morusu = ""
             //入力データを受け取る
             var text:String = inTextId.text.toString()
-            //（一応）文字数を受け取る
-            var count:Int = text.length
             //cher型に一文字ずつ格納
             var charAry = text.toCharArray()
 
+            //モールス変換部分
             for (ch in charAry) {
                 morusu = morusu +"　"+ henkan(ch.toString())
             }
 
+            if(arusuZyoutai == true){
+                var morusuCharAry = morusu.toCharArray()
+
+                morusu = ""
+
+                for (mo in morusuCharAry){
+                    morusu = morusu + henkanArus(mo.toString())
+                }
+            }
+
+
             outTextId.text = morusu
-            println(morusu)
+        }
+
+        tateButtonId.setOnClickListener {
+            //morusu初期化
+            morusu = ""
+            //入力データを受け取る
+            var text:String = inTextId.text.toString()
+            //cher型に一文字ずつ格納
+            var charAry = text.toCharArray()
+
+            for (ch in charAry) {
+                morusu = morusu +"\n"+ henkan(ch.toString()) + "　[$ch]"
+            }
+
+            if(arusuZyoutai == true){
+                var morusuCharAry = morusu.toCharArray()
+
+                morusu = ""
+
+                for (mo in morusuCharAry){
+                    morusu = morusu + henkanArus(mo.toString())
+                }
+            }
+
+            outTextId.text = morusu
         }
 
         //クリップボードに保存
@@ -53,6 +92,18 @@ class MainActivity : AppCompatActivity() {
             copyToClipboard(morusu)
         }
 
+    }
+
+    fun henkanArus(morusuMoto:String):String{
+        return when(morusuMoto){
+            " " -> " "
+            "　" -> "　"
+
+            "－" -> "ﾓｯﾁｰﾝ!"
+            "・" -> "ｱﾙﾏﾙｯ!!"
+
+            else -> morusuMoto
+        }
     }
 
     fun henkan(textMoto: String): String {
