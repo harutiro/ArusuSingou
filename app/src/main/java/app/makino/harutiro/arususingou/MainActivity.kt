@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         var arusuZyoutai: Boolean = false
         //縦表示状態
         var modeZyoutai:Boolean = false
-
+        //モールス部分ごとに集める部分
         var morusuAtumari:String = ""
 
         //アルスモードにするか判断
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
             modeZyoutai = isChecked
         }
 
+        //変換部分
         tateButtonId.setOnClickListener {
             //morusu初期化
             morusu = ""
