@@ -25,7 +25,7 @@
         android:id="@+id/textView2"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:text="対応文字・・・ひらがなのみ"
+        android:text="対応文字・・ひらがな、ー、・、ﾓｯﾁｰﾝ!、ｱﾙﾏﾙｯ!!"
         app:layout_constraintBottom_toTopOf="@+id/arusSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,27 +39,27 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/yokoButton" />
+        app:layout_constraintTop_toTopOf="@+id/modeSwitch" />
 
-    <Button
-        android:id="@+id/yokoButton"
+    <Switch
+        android:id="@+id/modeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="横並び変換"
-        app:layout_constraintBottom_toTopOf="@+id/tateButton"
+        android:text="縦並び出力モード"
+        app:layout_constraintBottom_toTopOf="@+id/henkanButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/arusSwitch" />
 
     <Button
-        android:id="@+id/tateButton"
+        android:id="@+id/henkanButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="縦並び変換"
+        android:text="変換"
         app:layout_constraintBottom_toTopOf="@+id/saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yokoButton" />
+        app:layout_constraintTop_toBottomOf="@+id/modeSwitch" />
 
     <Button
         android:id="@+id/saveButton"
@@ -70,13 +70,13 @@
         app:layout_constraintBottom_toTopOf="@+id/outText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tateButton" />
+        app:layout_constraintTop_toBottomOf="@+id/henkanButton" />
 
     <TextView
         android:id="@+id/outText"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="450dp"
+        android:layout_marginTop="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -17,61 +17,95 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val outTextId = findViewById<TextView>(R.id.outText)
-        val tateButtonId = findViewById<Button>(R.id.tateButton)
-        val yokoButtonId = findViewById<Button>(R.id.yokoButton)
+        val tateButtonId = findViewById<Button>(R.id.henkanButton)
         val arusSwitchId = findViewById<Switch>(R.id.arusSwitch)
         val inTextId = findViewById<EditText>(R.id.inText)
         val saveButtonId = findViewById<Button>(R.id.saveButton)
         val layoutId = findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.Layout)
+        val modeSwitchId = findViewById<Switch>(R.id.modeSwitch)
 
         //モールス信号格納
         var morusu = ""
         //アルス変換状態
         var arusuZyoutai: Boolean = false
+        //縦表示状態
+        var modeZyoutai:Boolean = false
 
+        var morusuAtumari:String = ""
+
+        //アルスモードにするか判断
         arusSwitchId.setOnCheckedChangeListener { compoundButton, isChecked ->
             arusuZyoutai = isChecked
         }
-
-        yokoButtonId.setOnClickListener {
-            //morusu初期化
-            morusu = ""
-            //入力データを受け取る
-            var text:String = inTextId.text.toString()
-            //cher型に一文字ずつ格納
-            var charAry = text.toCharArray()
-
-            //モールス変換部分
-            for (ch in charAry) {
-                morusu = morusu +"　"+ henkan(ch.toString())
-            }
-
-            //アルマル信号に変換
-            if(arusuZyoutai == true){
-                var morusuCharAry = morusu.toCharArray()
-
-                morusu = ""
-
-                for (mo in morusuCharAry){
-                    morusu = morusu + henkanArus(mo.toString())
-                }
-            }
-
-            //set
-            outTextId.text = morusu
+        //縦表示にするか判断
+        modeSwitchId.setOnCheckedChangeListener { compoundButton, isChecked ->
+            modeZyoutai = isChecked
         }
 
         tateButtonId.setOnClickListener {
             //morusu初期化
             morusu = ""
             //入力データを受け取る
-            var text:String = inTextId.text.toString()
+            var text:String = inTextId.text.toString() + " "
             //cher型に一文字ずつ格納
             var charAry = text.toCharArray()
 
-            //モールス信号変換
+            //信号変換
             for (ch in charAry) {
-                morusu = morusu +"\n"+ henkan(ch.toString()) + "　[$ch]"
+
+
+
+                when(ch){
+                    //アルスモード
+                    'ﾓ' -> {
+                        morusuAtumari = morusuAtumari + "－"
+                    }
+                    'ｱ'->{
+                        morusuAtumari = morusuAtumari + "・"
+                    }
+                    //アルマルモードスルーポイント
+                    'ｯ','ﾁ','ｰ','ﾝ','!'-> {}
+                    'ﾙ','ﾏ'->{}
+
+
+                    //モールスモード
+                    '－'->{
+                        morusuAtumari = morusuAtumari + "－"
+                    }
+                    '・'->{
+                        morusuAtumari = morusuAtumari + "・"
+                    }
+
+                    //空白
+                    ' ','　'->{
+                        println("ゴール"+morusuAtumari)
+                        morusu = morusu + henkanHiragana(morusuAtumari)
+                        println("出力"+morusu)
+                        morusuAtumari = ""
+                    }
+
+                    //おそらくひらがなアンドその他
+                    else->{
+
+                        if(modeZyoutai == true){
+                            //縦表示モード
+                            morusu = morusu +"\n"+ henkan(ch.toString()) + "　[$ch]"
+                        }else{
+                            //横表示モード
+                            morusu = morusu +"　"+ henkan(ch.toString())
+                        }
+
+                    }
+
+
+
+
+
+
+
+
+
+                }
             }
 
             //アルマル信号変換
@@ -94,6 +128,74 @@ class MainActivity : AppCompatActivity() {
             copyToClipboard(morusu)
         }
 
+    }
+    fun henkanHiragana(morusuMoto: String):String{
+        return when(morusuMoto){
+            "－－・－－"->"あ"
+            "・－"-> "い"
+            "・・－"->"う"
+            "－・－－－"->"え"
+            "・－・・・"->"お"
+
+            "・－・・"->"か"
+            "－・－・・"->"き"
+            "・・・－"->"く"
+            "－・－－"->"け"
+            "－－－－"->"こ"
+
+            "－・－・－"->"さ"
+            "－－・－・"->"し"
+            "－－－・－"->"す"
+            "・－－－・"->"せ"
+            "－－－・"->"そ"
+
+            "－・"->"た"
+            "・・－・"->"ち"
+            "・－－・"->"つ"
+            "・－・－－"->"て"
+            "・・－・・"->"と"
+
+            "・－・"->"な"
+            "－・－・"->"に"
+            "・・・・"->"ぬ"
+            "－－・－"->"ね"
+            "・・－－"->"の"
+
+            "－・・・"->"は"
+            "－－・・－"->"ひ"
+            "－－・・"->"ふ"
+            "・"->"へ"
+            "－・・"->"ほ"
+
+            "－・・－"->"ま"
+            "・・－・－"->"み"
+            "－"->"む"
+            "－・・・－"->"め"
+            "－・・－・"->"も"
+
+            "・－－"->"や"
+            "－・・－－"->"ゆ"
+            "－－"->"よ"
+
+            "・・・"->"ら"
+            "－－・"->"り"
+            "－・－－・"->"る"
+            "－－－"->"れ"
+            "・－・－"->"ろ"
+
+            "－・－"->"わ"
+            "・－－－"->"を"
+            "・－・－・"->"ん"
+
+            "・－－・－"->"ー"
+            "・－・－・・"->"。"
+            "・－・－・－"->"、"
+            "・・"->"゛"
+
+            ""->" "
+
+            else -> "？"
+        }
     }
 
     fun henkanArus(morusuMoto:String):String{
@@ -147,7 +249,7 @@ class MainActivity : AppCompatActivity() {
             "ほ" -> "－・・"
 
             "ま" -> "－・・－"
-            "み" -> "－－・・－"
+            "み" -> "・・－・－"
             "む" -> "－"
             "め" -> "－・・・－"
             "も" -> "－・・－・"
